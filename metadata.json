@@ -1,0 +1,6 @@
+{
+  "name": "KYRIOS AI",
+  "description": "Ultimate Personal AI Assistant & Digital Partner. Intelligence. Initiative. Control.",
+  "requestFramePermissions": ["camera", "microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
