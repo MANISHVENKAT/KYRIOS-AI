@@ -19,6 +19,15 @@ export interface Attachment {
   size?: number;
 }
 
+export interface MessageTelemetry {
+  ttftMs?: number;
+  durationMs?: number;
+  tokenCount?: number;
+  tokensPerSec?: number;
+  modelUsed?: string;
+  isFallback?: boolean;
+}
+
 export interface Message {
   id: string;
   role: 'user' | 'assistant' | 'system';
@@ -30,6 +39,7 @@ export interface Message {
   proposedActions?: ProposedAction[];
   mode?: string;
   moodEmoji?: string;
+  telemetry?: MessageTelemetry;
 }
 
 export interface Memory {

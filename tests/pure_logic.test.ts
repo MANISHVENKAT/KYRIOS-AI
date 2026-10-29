@@ -66,3 +66,38 @@ Check out https://example.com for **more details**.
   assert.ok(cleaned.includes('Code snippet omitted'));
   assert.ok(cleaned.includes('more details'));
 });
+
+test('ResilienceService: generates comprehensive answer and action cards on 405 fallback', async () => {
+  const { ResilienceService } = await import('../src/services/resilience.ts');
+  const dummyMode = {
+    id: 'coder',
+    name: 'Staff Engineer',
+    tagline: 'Technical excellence',
+    icon: 'Terminal',
+    systemPrompt: 'Code cleanly'
+  };
+
+  // Test code scaffold query
+  const codeResult = ResilienceService.generateAnswer(
+    'Scaffold a production full-stack project structure',
+    dummyMode as any,
+    'Alex',
+    [],
+    []
+  );
+  assert.ok(codeResult.content.includes('project-root/'));
+  assert.ok(codeResult.actions.length > 0);
+  assert.strictEqual(codeResult.actions[0].type, 'code_scaffold');
+
+  // Test document vault query with grounded chunk
+  const docResult = ResilienceService.generateAnswer(
+    'What does the quarterly report state?',
+    dummyMode as any,
+    'Alex',
+    [{ documentTitle: 'report.pdf', chunkText: 'Q3 revenue surged by 34% driven by cloud growth.' }],
+    []
+  );
+  assert.ok(docResult.content.includes('report.pdf'));
+  assert.ok(docResult.content.includes('Q3 revenue surged'));
+  assert.strictEqual(docResult.citations.length, 1);
+});
